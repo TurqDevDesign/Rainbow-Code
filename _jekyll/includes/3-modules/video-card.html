@@ -25,24 +25,31 @@
       </span>
     </div>
     <div class="video-card-thumb-wrapper">
-      <div class="video-card-image-container">
+      <div class="video-card-image-container"
+        {% if include.video.video_id %}
+          style="filter: blur(5px)"
+        {% endif %}
+      >
         <img
-          class="video-card-image video-card-image-pos-cent video-thumbnail low-res-thumb"
           src="{{ '/assets/images/16-9-placeholder.png' | relative_url }}"
 
           {% if include.video.video_id %}
+            class="video-card-image video-card-image-pos-cent video-thumbnail low-res-thumb"
             style="background-image: url(https://i.ytimg.com/vi/{{include.video.video_id}}/default.jpg)"
             data-highressrc="https://i.ytimg.com/vi/{{include.video.video_id}}/hqdefault.jpg"
           {% else %}
+            class="video-card-image video-card-image-pos-cent video-thumbnail"
             style="background-image: url({{ '/assets/images/streamcover.jpg' | relative_url }})"
           {% endif %}
         >
       </div>
-      <div class="video-card-loading-animation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+      {% if include.video.video_id %}
+        <div class="video-card-loading-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
