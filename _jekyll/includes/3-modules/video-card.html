@@ -1,66 +1,48 @@
-{% comment %}
-  This module displays a nice card for the given video.
-  It includes the video's thumbnail, title, release-date, short description
-  (excerpt) as well as links to YouTube and the internal video page.
+<div class="video-card-wrapper">
+  <div class="video-card-content">
+    <div class="video-card-text">
+        <span class="video-card-title">
+          {% comment %} Video title. {% endcomment %}
+          <h3>
+            {{ include.video.title }}
+          </h3>
+        </span>
 
-  Parameters:
-    - video Video     The video to display.
-{% endcomment %}
+        {% comment %} Release date. {% endcomment %}
+        {% if include.video.date > site.time %}
+          <span class="video-card-date">
+            {{ include.video.date | date: '%d %b %Y - %H:%M' }} EDT
+          </span>
+        {% else %}
+          <span class="video-card-date">
+            {{ include.video.date | date_to_string }}
+          </span>
+        {% endif %}
 
-
-<div class="video-card">
-
-  {% comment %} Use right link based on the video's date. {% endcomment %}
-  {% if include.video.date <= site.time %}
-    <a href="{{ include.video.url | relative_url }}">
-  {% else %}
-    <a href="https://www.youtube.com/thecodingtrain/live" target="blank">
-  {% endif %}
-
-    {% comment %} Video thumbnail. {% endcomment %}
-    <div class="video-header">
-      <div class="thumb-container">
-
-        {% comment %} The video badge (with its number). {% endcomment %}
-        {% include 1-tools/series-for-video.html video=video %}
-        <span class="video-badge">#{% if out_series.series_number%}{{ out_series.series_number }}.{% endif %}{{ include.video.video_number }}</span>
-
-        <div
-          class="video-thumbnail"
+      <span class="video-card-description">
+        {% comment %} Short description/excerpt. {% endcomment %}
+        {{ include.video.excerpt }}
+      </span>
+    </div>
+    <div class="video-card-thumb-wrapper">
+      <div class="video-card-image-container">
+        <img
+          class="video-card-image video-card-image-pos-cent video-thumbnail low-res-thumb"
+          src="{{ '/assets/images/16-9-placeholder.png' | relative_url }}"
 
           {% if include.video.video_id %}
-            style="background-image: url(https://i.ytimg.com/vi/{{include.video.video_id}}/mqdefault.jpg)"
+            style="background-image: url(https://i.ytimg.com/vi/{{include.video.video_id}}/default.jpg)"
+            data-highressrc="https://i.ytimg.com/vi/{{include.video.video_id}}/hqdefault.jpg"
           {% else %}
             style="background-image: url({{ '/assets/images/streamcover.jpg' | relative_url }})"
           {% endif %}
         >
-        </div>
       </div>
-
-      {% comment %} Video title. {% endcomment %}
-      <h3>{{ include.video.title }}</h3>
-
-      {% comment %} Release date. {% endcomment %}
-      {% if include.video.date > site.time %}
-        <span class="video-date">{{ include.video.date | date: '%d %b %Y - %H:%M' }} EDT</span>
-      {% else %}
-        <span class="video-date">{{ include.video.date | date_to_string }}</span>
-      {% endif %}
+      <div class="video-card-loading-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-  </a>
-
-  {% comment %} Short description/excerpt. {% endcomment %}
-  <div class="video-description">
-    {{ include.video.excerpt }}
-  </div>
-
-  {% comment %} CTAs (link to YouTube and internal video page or livestream). {% endcomment %}
-  <div class="buttons">
-    {% if include.video.date > site.time %}
-      <a href="https://www.youtube.com/thecodingtrain/live" target="blank">Tune in Live</a>
-    {% else %}
-      <a href="https://youtu.be/{{ include.video.video_id }}">Watch on YT</a>
-      <a href="{{ include.video.url | relative_url }}">To the {{ include.video.video_type_short | default: include.video.video_type }}</a>
-    {% endif %}
   </div>
 </div>

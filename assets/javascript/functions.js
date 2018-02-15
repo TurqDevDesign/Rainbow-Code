@@ -68,3 +68,45 @@ window.addEventListener('load', () => {
       )
     );
 });
+
+function lazyLoadImg() {
+
+}
+
+/**
+ * Loads specified image in background
+ * @param  {string} imgSources Image path or URL
+ * @return {boolean}           Returns true when image is loaded.
+ */
+function backgroundLoadImage(imgSource) {
+  return new Promise((resolve, reject) => {
+      const img = new Image()
+
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(img);
+
+      img.src = imgSource;
+  })
+}
+
+function updateThumbnails() {
+  const videoCardThumbnails = document.querySelectorAll(".video-card-wrapper .video-card-image-container img.low-res-thumb")
+
+  Array.from(videoCardThumbnails).map((thumbnail) => {
+    let highResSrc = thumbnail.dataset.highressrc;
+    // Once image is loaded, do some stuff
+    backgroundLoadImage(highResSrc).then((hqImage) => {
+      let par = thumbnail.parentNode
+      // Remove class so it won't be targeted if we happen to run the function again
+      thumbnail.classList.remove('low-res-thumb')
+      // Replace the background image of the IMG element
+      thumbnail.style.backgroundImage = `url(${hqImage.src})`
+      // remove loader
+      par.parentNode.removeChild(par.parentNode.querySelector(".video-card-loading-animation"))
+      // Remove blur from thumbnail parent
+      par.style.filter = "blur(0)";
+    })
+  })
+}
+
+updateThumbnails()
