@@ -51,5 +51,10 @@
         </div>
       {% endif %}
     </div>
+    <div class="video-card-badge-contain">
+      {% comment %} The video badge (with its number). {% endcomment %}
+      {% include 1-tools/series-for-video.html video=video %}
+      <span class="video-badge">#{% if out_series.series_number%}{{ out_series.series_number }}.{% endif %}{{ include.video.video_number }}</span>
+    </div>
   </div>
 </div>
