@@ -82,10 +82,10 @@ function backgroundLoadImage(imgSource) {
   return new Promise((resolve, reject) => {
       const img = new Image()
 
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(img);
+      img.onload = () => resolve(img)
+      //img.onerror = (e) => {throw e}
 
-      img.src = imgSource;
+      img.src = imgSource
   })
 }
 
@@ -93,7 +93,7 @@ function updateThumbnails() {
   const videoCardThumbnails = document.querySelectorAll(".video-card-wrapper .video-card-image-container img.low-res-thumb")
 
   Array.from(videoCardThumbnails).map((thumbnail) => {
-    let highResSrc = thumbnail.dataset.highressrc;
+    let highResSrc = thumbnail.dataset.highressrc
     // Once image is loaded, do some stuff
     backgroundLoadImage(highResSrc).then((hqImage) => {
       let par = thumbnail.parentNode
@@ -104,7 +104,9 @@ function updateThumbnails() {
       // remove loader
       par.parentNode.removeChild(par.parentNode.querySelector(".video-card-loading-animation"))
       // Remove blur from thumbnail parent
-      par.style.filter = "blur(0)";
+      par.style.filter = "blur(0)"
+    }).catch((thumbnail, e) => {
+      console.log(thumbnail, e)
     })
   })
 }

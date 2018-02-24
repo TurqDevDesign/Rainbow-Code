@@ -23,7 +23,7 @@
     display: inline-block
     background: #FFF
     border-radius: .075em
-    transition: all 375ms $timing-function
+    transition: all 375ms $standard-timing-function
 
 .navigation
   position: absolute
@@ -84,12 +84,12 @@
                 property: all
                 duration: 150ms
                 delay: ($i - 1) * 75ms
-                timing-function: $timing-function
+                timing-function: $standard-timing-function
 
 
 // Mobile Navigation Drawer
 .mobilenav-backdrop
-  transition: filter 375ms $timing-function
+  transition: filter 375ms $standard-timing-function
 
 #nav-toggle
   display: none

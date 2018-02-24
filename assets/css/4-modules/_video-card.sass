@@ -29,8 +29,11 @@
 //       @include flex-basis(100%)
 //       margin-top: 0.5em
 
-
-
+@function calc-percentage($numerator, $denominator:0)
+  @if $denominator > 0
+    @return $numerator / $denominator * 100%
+  @else
+    @return $numerator * 100%
 
 a
   color: inherit
@@ -47,28 +50,28 @@ a
   overflow: hidden
   &:nth-child(5n+1)
     &:hover
-      .video-card-image-container
-        background: $ct-red
+      .video-card-text
+        background: rgba($ct-red, .97)
   &:nth-child(5n+2)
     &:hover
-      .video-card-image-container
-        background: $ct-blue
+      .video-card-text
+        background: rgba($ct-blue, .97)
   &:nth-child(5n+3)
     &:hover
-      .video-card-image-container
-        background: $ct-orange
+      .video-card-text
+        background: rgba($ct-orange, .97)
   &:nth-child(5n+4)
     &:hover
-      .video-card-image-container
-        background: $ct-purple
+      .video-card-text
+        background: rgba($ct-purple, .97)
   &:nth-child(5n+5)
     &:hover
-      .video-card-image-container
-        background: $ct-green
+      .video-card-text
+        background: rgba($ct-green, .97)
   &:after
     content: ""
     display: block
-    padding-top: 130%
+    padding-top: calc-percentage($card-ratio)
   .video-card-badge-contain
     position: absolute
     top: 0
@@ -77,7 +80,7 @@ a
     &:after
       content: ""
       display: block
-      padding-top: 56%
+      padding-top: calc-percentage($thumbnail-ratio)
     .video-badge
       position: absolute
       right: 0
@@ -88,46 +91,44 @@ a
       font-size: 2rem
       padding: .5em .5em .5em .6em
       border-radius: $standard-border-radius 0em 0em
-      transition: all .4s $timing-function
+      transform: translate3d(0,0,0)
+      transition: transform .1s $standard-timing-function
 .video-card-thumb-wrapper
   overflow: hidden
   position: relative
   display: block
-  min-height: 10%
-  transition: all .4s $timing-function
+  height: auto
+  transform-origin: top center
+  transition: transform .3s $standard-timing-function
+  transform: scale3d(1,1,1)
   &:after
     content: ""
     display: block
-    padding-top: 56%
-  .video-card-loading-animation
-    opacity: 1
-    transition: all .4s $timing-function
+    padding-top: calc-percentage($thumbnail-ratio)
   .video-card-image-container
     width: 100%
-    min-height: 10%
+    height: 100%
     overflow: hidden
     display: block
     position: absolute
     text-align: center
-    transition: all .4s $timing-function, background-color 0s linear 401ms, filter .6s ease-in-out
+    transition: filter .6s $secondary-timing-function
     background: $placeholder-bg-color
-    &:after
-      content: ""
-      display: block
-      padding-top: 56%
     img
       display: block
-      transition: all .4s $timing-function, background-image 0s linear
       position: absolute
       left: -100%
       right: -100%
+      top: -100%
+      bottom: -100%
       margin: auto
       height: 102%
-      opacity: 1
     .video-thumbnail
       background-size: cover
       background-position: center
   .video-card-loading-animation
+    opacity: 1
+    transition: all .4s $standard-timing-function
     width: 100%
     position: absolute
     top: 50%
@@ -145,15 +146,11 @@ a
         display: block
         animation-fill-mode: both
         transform-origin: center center
-        transform: translateZ(0)
         backface-visibility: hidden
-        animation: image-loader-animation 1.5s infinite $timing-function
+        animation: image-loader-animation 1.5s infinite $standard-timing-function
         background: #fff
         opacity: .75
         content: ''
-      &:nth-child(1)
-        &:before
-          animation-delay: 0
       &:nth-child(2)
         &:before
           animation-delay: .25s
@@ -164,117 +161,109 @@ a
       0%,
       95%,
       100%
-        transform: scale(1)
+        transform: scale3d(1,1,1)
       40%
-        transform: scale(0)
+        transform: scale3d(0,0,1)
 .video-card-text
+  box-sizing: content-box
   text-align: left
   width: 100%
-  height: 58%
+  height: 100%
   position: absolute
-  bottom: 0
+  top: 0
   left: 0
   right: 0
   display: block
-  padding: 10px
+  padding: 0
+  padding-top: calc-percentage($thumbnail-ratio)
   z-index: 2
   color: $text-color
-  transition: all .9s $timing-function
+  transition: all .3s $standard-timing-function
   overflow: hidden
   span
     display: block
     z-index: 3
+    padding: 0 20px
+    &.video-card-text-sections
+      transition: color .4s $secondary-timing-function
     &.video-card-title
-      padding: 0 10px
-      transition: all .4s $timing-function
       h3
-        margin: .5em 0
+        margin: .5em 0 .3em 0
         font-size: 2rem
         overflow: hidden
         white-space: nowrap
         text-overflow: ellipsis
     &.video-card-date
       font-size: 1.4rem
-      padding: 0 10px 5px 10px
+      padding-bottom: 10px
       font-weight: 300
       font-style: italic
-      transition: all .4s $timing-function
+      color: $tertiary-color
     &.video-card-description
-      font-size: 1.4rem
+      font-size: 1.6rem
       color: $tertiary-color
       font-weight: 400
-      padding: 3px 10px
-      transition: all .4s $timing-function
+      padding-top: 3px
       &:before
         content: ""
         display: block
         height: 1px
-        width: 32%
-        background: #777777
+        width: 100%
+        transform: scale3d(.10,1,1)
+        transform-origin: left
+        background: $secondary-color
         opacity: .8
         margin: 0 0 3px 0
-        transition: all 1s $timing-function
+        transition: transform 1s $standard-timing-function, background-color .4s $standard-timing-function
+      p
+        margin-top: 11px
 .video-card-content
   position: absolute
   top: 0
   left: 0
   bottom: 0
   right: 0
+  &:before
+    content: ''
+    display: block
+    width: 100%
+    height: 80px
+    position: absolute
+    bottom: 0
+    z-index: 100
+    background: linear-gradient(transparent, #fff 90%)
+    transition: transform .2s $standard-timing-function .2s
+    transform: translate3d(0,0,0)
+  &:hover
+    &:before
+      transform: translate3d(0, 101%, 0)
+      transition: transform .2s $standard-timing-function 0s
   &:hover >
     .video-card-badge-contain
       .video-badge
-        right: -100%
-        transition: all .4s $timing-function
+        transform: translate3d(101%,0,0)
     .video-card-thumb-wrapper
-      min-height: 100%
-      transition: all .4s $timing-function
+      $per: $card-ratio / $thumbnail-ratio
+      transform: scale3d($per, $per, 1)
       .video-card-loading-animation
         opacity: 0
-        transition: all .4s $timing-function
       .video-card-image-container
-        width: 100%
-        min-height: 100%
-        overflow: hidden
-        display: block
         text-align: center
-        transition: all .4s $timing-function, background-color 0s linear 0s, filter .6s ease-in-out
-        img
-          display: block
-          transition: all .4s $timing-function, background-image 0s linear
-          position: absolute
-          left: -100%
-          right: -100%
-          margin: auto
-          height: 102%
-          opacity: .05
+        transition: filter .6s $secondary-timing-function
     .video-card-text
-      text-align: left
-      width: 100%
-      height: 100%
-      position: absolute
-      bottom: 0
-      left: 0
-      right: 0
-      display: block
-      padding: 15px 10px 10px 10px
-      transition: all .4s $timing-function
+      padding-top: 15px
+      transition: all .3s $standard-timing-function
       span
+        &.video-card-text-sections
+          transition: color .3s $deceleration-timing-function
+          color: #fff
         &.video-card-title
           h3
             overflow: visible
             white-space: normal
-        &.video-card-description
-          color: #fff
-          font-size: 1.7rem
-          transition: all .4s $timing-function
-        &.video-card-date, &.video-card-title
-          color: #fff
-          transition: all .4s $timing-function
         &.video-card-description:before
-          width: 100%
-          opacity: .8
+          transform: scale3d(1,1,1)
           background: #fff
-          transition: all 1s $timing-function
 .video-card-image-pos-cent
   top: -100%
   bottom: -100%

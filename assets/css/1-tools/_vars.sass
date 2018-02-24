@@ -1,12 +1,12 @@
 // Basic Colors
-$text-color: #222
+$text-color: darken(#676D77, 15%)
 $secondary-color: lighten($text-color, 40%)
-$tertiary-color: lighten($text-color, 20%)
+$tertiary-color: #676D77
 
 $placeholder-bg-color: #ececec
 
-$box-shadow-primary: #eee
-$box-shadow-secondary: darken($box-shadow-primary, 10%)
+$box-shadow-primary: lighten(#DADEEA, 5%)
+$box-shadow-secondary: darken($box-shadow-primary, 2%)
 
 
 // Fonts
@@ -36,8 +36,16 @@ $mobile: 550px
 
 
 // Animations
-$timing-function: cubic-bezier(0.4, 0.0, 0.2, 1)
+// Use for movement-based timing
+$standard-timing-function: cubic-bezier(.4, 0, .2, 1)
+$acceleration-timing-function: cubic-bezier(0.4, 0.0, 1, 1)
+$deceleration-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1)
+// Use for other animations. I.E. opacity or color changes
+$secondary-timing-function: ease-in-out
 
+// Card Sizing
+$thumbnail-ratio: 9/16
+$card-ratio: 13/10
 
 // Misc
 $standard-border-radius: 5px
